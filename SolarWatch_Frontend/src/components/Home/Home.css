@@ -1,0 +1,21 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    gap: 1rem;
+    border: solid white 2px;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: #424242;
+    width: 50%;
+}
+
+.description p {
+    font-size: large;
+}
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}

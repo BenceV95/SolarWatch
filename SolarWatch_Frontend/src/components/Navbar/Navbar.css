@@ -1,0 +1,18 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 1rem;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.nav-user {
+    margin-right: 1rem;
+}
+
+.nav-timer {
+    margin-left: 1rem;
+}

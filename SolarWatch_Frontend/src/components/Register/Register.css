@@ -1,0 +1,12 @@
+.register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #424242;
+    padding: 2rem;
+    border: solid white 2px;
+    border-radius: 10px;
+    width: 50%;
+    justify-self: center;
+}

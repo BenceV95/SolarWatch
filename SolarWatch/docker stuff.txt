@@ -1,0 +1,1 @@
+docker run --name my-postgres -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=123456 -e POSTGRES_DB=solar_watch -v postgres_data:/var/lib/postgresql/data -p 29777:5432 -d postgres
