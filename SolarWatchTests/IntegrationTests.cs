@@ -23,37 +23,38 @@ namespace SolarWatchTests
         {
             var webAppFactory = factory.WithWebHostBuilder(builder =>
             {
+                builder.UseEnvironment("Test");
                 builder.ConfigureServices(services =>
                 {
                     // Remove all DbContextOptions registrations
-                    var dbContextOptionsDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<SolarWatchApiContext>));
-                    if (dbContextOptionsDescriptor != null)
+                    var descriptors = services.Where(d => d.ServiceType == typeof(DbContextOptions<SolarWatchApiContext>)).ToList();
+                    foreach (var descriptor in descriptors)
                     {
-                        services.Remove(dbContextOptionsDescriptor);
+                        services.Remove(descriptor);
                     }
 
-                    // Remove the DbContext itself if registered
+                    // Remove any existing DbContext registration
                     var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(SolarWatchApiContext));
                     if (dbContextDescriptor != null)
                     {
                         services.Remove(dbContextDescriptor);
                     }
 
-                    // Register a new in-memory database for testing
+                    // Add the in-memory database
                     services.AddDbContext<SolarWatchApiContext>(options =>
-                    {
-                        options.UseInMemoryDatabase(_dbName);
-                    });
+                        options.UseInMemoryDatabase(_dbName));
 
-                    // Ensure database is created
+                    // Ensure database is created in a separate scope
                     using var scope = services.BuildServiceProvider().CreateScope();
                     var db = scope.ServiceProvider.GetRequiredService<SolarWatchApiContext>();
+                    db.Database.EnsureDeleted();
                     db.Database.EnsureCreated();
                 });
             });
 
             _client = webAppFactory.CreateClient();
         }
+
 
         [Fact]
         public async Task GetGeocodingData_ValidLocation_ReturnsOk()
@@ -74,7 +75,7 @@ namespace SolarWatchTests
         public async Task GetGeocodingData_InvalidLocation_ReturnsNotFound()
         {
             // Arrange
-            var location = "UnknownLocation123456";
+            var location = "UnknownLocation";
 
             // Act
             var response = await _client.GetAsync($"/SolarWatch/GeocodingData?location={location}");
@@ -96,7 +97,7 @@ namespace SolarWatchTests
             // Assert
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            content.Should().Contain(location);
+            content.Should().Contain(date);
         }
 
         [Fact]

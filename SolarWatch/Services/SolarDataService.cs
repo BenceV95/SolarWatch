@@ -27,7 +27,7 @@ namespace SolarWatch.Services
             if (geocodingData == null)
             {
                 var locationData = await _provider.GetLocationFromNameAsync(location); // fetch the api
-                if (string.IsNullOrEmpty(locationData)) throw new LocationNotFoundException("Location not found!"); // api could not find it
+                if (!locationData.Contains("lat")) throw new LocationNotFoundException("Location not found!"); // api could not find it
 
                 geocodingData = _processor.ProcessJsonForGeocodingData(locationData); // turn json response into model
 

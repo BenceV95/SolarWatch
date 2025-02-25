@@ -1,0 +1,38 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "development" ]
+  pull_request:
+    branches: [ "development" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore SolarWatch/SolarWatch.sln
+
+    - name: Debug - List Test Projects
+      run: ls -R SolarWatch/
+
+    - name: Add Test Project if Missing
+      run: dotnet sln SolarWatch/SolarWatch.sln add SolarWatchTests/SolarWatchTests.csproj || true
+
+    - name: Build
+      run: dotnet build SolarWatch/SolarWatch.sln --no-restore --configuration Debug
+
+    - name: Debug - List Build Output
+      run: ls -R SolarWatchTests/bin/Debug/net9.0/ || true
+
+    - name: Test
+      run: dotnet test SolarWatchTests/SolarWatchTests.csproj --no-build --verbosity normal

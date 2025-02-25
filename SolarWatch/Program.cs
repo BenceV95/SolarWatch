@@ -103,15 +103,16 @@ namespace SolarWatch
 
 
 
-            
-            builder.Services.AddDbContext<SolarWatchApiContext>(options =>
+            if (!builder.Environment.IsEnvironment("Test"))
             {
-                var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING_DOCKER") 
-                       ?? configuration["AppSettings:CONNECTION_STRING_DOCKER"];
-                
-                options.UseNpgsql(connectionString);
-            });
-            
+                builder.Services.AddDbContext<SolarWatchApiContext>(options =>
+                {
+                    var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING_DOCKER")
+                                           ?? configuration["AppSettings:CONNECTION_STRING_DOCKER"];
+
+                    options.UseNpgsql(connectionString);
+                });
+            }
 
 
             builder.Services
