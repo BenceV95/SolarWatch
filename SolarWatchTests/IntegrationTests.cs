@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -10,17 +13,23 @@ using Microsoft.Extensions.DependencyInjection;
 using SolarWatch;
 using Microsoft.AspNetCore.Hosting;
 using SolarWatch.Context;
+using SolarWatch.Contracts;
+using SolarWatch.Controllers;
+using Assert = Xunit.Assert;
 
 namespace SolarWatchTests
 {
     [Collection("IntegrationTests")]
-    public class IntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+    public class IntegrationTestForAuth : IDisposable
     {
         private readonly string _dbName = Guid.NewGuid().ToString();
-        private readonly HttpClient _client;
+        public HttpClient Client { get; }
+        public string Token { get; private set; }
 
-        public IntegrationTests(WebApplicationFactory<Program> factory)
+        public IntegrationTestForAuth()
         {
+            var factory = new WebApplicationFactory<Program>();
+
             var webAppFactory = factory.WithWebHostBuilder(builder =>
             {
                 builder.UseEnvironment("Test");
@@ -52,9 +61,45 @@ namespace SolarWatchTests
                 });
             });
 
-            _client = webAppFactory.CreateClient();
+            Client = webAppFactory.CreateClient();
+            RegisterTestUser().GetAwaiter().GetResult(); // register a new user before tests for [Authorize] to work
         }
 
+        private async Task RegisterTestUser()
+        {
+            var newUser = new RegistrationRequest("testuser@test.com", "testuser", "testuser");
+            var response = await Client.PostAsJsonAsync("/Auth/Register", newUser);
+            response.EnsureSuccessStatusCode();
+
+            var login = await Client.PostAsJsonAsync("/Auth/Login", new AuthController.AuthRequest("testuser@test.com", "testuser"));
+            var token = await login.Content.ReadFromJsonAsync<AuthController.AuthResponse>();
+            Token = token.Token;
+
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+        }
+
+        public void Dispose() => Client.Dispose();
+    }
+
+    public class IntegrationTests : IClassFixture<IntegrationTestForAuth>
+    {
+
+        private readonly HttpClient _client;
+
+        public IntegrationTests(IntegrationTestForAuth setupAuth)
+        {
+            _client = setupAuth.Client;
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", setupAuth.Token);
+        }
+
+        [Fact]
+        public async Task LoginTest()
+        {
+
+            var testEndpoint = await _client.GetAsync("/Auth/testUser");
+
+            Assert.Equal(HttpStatusCode.OK, testEndpoint.StatusCode);
+        }
 
         [Fact]
         public async Task GetGeocodingData_ValidLocation_ReturnsOk()

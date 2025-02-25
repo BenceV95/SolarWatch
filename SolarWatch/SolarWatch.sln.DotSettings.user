@@ -3,5 +3,6 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::799DCF59-930B-4FF3-BF8D-EDF88B1AAEB7::net9.0::SolarWatchTests.SolarWatchControllerTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::799DCF59-930B-4FF3-BF8D-EDF88B1AAEB7::net9.0::SolarWatchTests.IntegrationTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::799DCF59-930B-4FF3-BF8D-EDF88B1AAEB7::net9.0::SolarWatchTests.IntegrationTestForAuth&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
