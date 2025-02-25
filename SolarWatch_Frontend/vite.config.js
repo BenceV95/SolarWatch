@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: process.env.VITE_API_BASE_URL,// || 'https://localhost:7119', // remove .env file and it will work
+        target: /* process.env.VITE_API_BASE_URL */ 'http://localhost:5158', // remove .env file and it will work
         changeOrigin: true,
         secure: false, // DO NOT USE IN PRODUCTION. GET A VALID SSL CERTIFICATE
         rewrite: (path) => path.replace(/^\/api/, '')

@@ -24,6 +24,7 @@ namespace SolarWatch.Controllers
         public async Task<ActionResult<AuthResponse>> RenewToken()
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            // do a validation for a valid / not blacklisted token
             var result = await _authenticationService.RenewTokenAsync(token);
 
             if (!result.Success)

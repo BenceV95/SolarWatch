@@ -7,11 +7,13 @@ namespace SolarWatch.Services.Authentication
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly ITokenBlacklistService _tokenBlacklistService;
 
-        public AuthService(UserManager<IdentityUser> userManager, ITokenService tokenService)
+        public AuthService(UserManager<IdentityUser> userManager, ITokenService tokenService, ITokenBlacklistService tokenBlacklistService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _tokenBlacklistService = tokenBlacklistService;
         }
 
         public async Task<AuthResult> RegisterAsync(string email, string username, string password, string role)
@@ -92,6 +94,7 @@ namespace SolarWatch.Services.Authentication
 
         public async Task<AuthResult> RenewTokenAsync(string token)
         {
+            
             var principal = _tokenService.GetPrincipalFromExpiredToken(token);
             if (principal == null)
             {
@@ -110,6 +113,8 @@ namespace SolarWatch.Services.Authentication
             {
                 return NoRolesAssigned(user.Email, user.UserName);
             }
+
+            _tokenBlacklistService.AddTokenToBlacklist(token);
 
             var newToken = _tokenService.CreateToken(user, roles[0]); // roles[0] might fail if there are more roles / user
             return new AuthResult(true, user.Email, user.UserName, newToken);

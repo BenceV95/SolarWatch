@@ -19,7 +19,7 @@ namespace SolarWatch.Controllers
             _solarDataService = solarDataService;
         }
 
-        [HttpGet("GeocodingData"), /*Authorize(Roles = "User, Admin")*/]
+        [HttpGet("GeocodingData"), Authorize(Roles = "User, Admin")]
         public async Task<ActionResult<GeocodingData>> GetGeocodingData([Required] string location)
         {
             try
@@ -35,7 +35,7 @@ namespace SolarWatch.Controllers
         }
 
 
-        [HttpGet("SolarData"), /*Authorize(Roles = "User, Admin")*/]
+        [HttpGet("SolarData"), Authorize(Roles = "User, Admin")]
         public async Task<ActionResult<SolarData>> GetSolarData([Required] DateOnly date, [Required] string location)
         {
             try
