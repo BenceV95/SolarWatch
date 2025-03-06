@@ -32,7 +32,7 @@ jobs:
       run: dotnet build SolarWatch/SolarWatch.sln --no-restore --configuration Debug
 
     - name: Debug - List Build Output
-      run: ls -R SolarWatchTests/bin/Debug/net9.0/ || true
+      run: ls -R SolarWatchTests/bin/Debug/net8.0/ || true
 
     - name: Test
       run: dotnet test SolarWatchTests/SolarWatchTests.csproj --no-build --verbosity normal
