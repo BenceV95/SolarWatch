@@ -7,11 +7,13 @@ namespace SolarWatch.Services.Authentication
 
         private RoleManager<IdentityRole> roleManager;
         private UserManager<IdentityUser> userManager;
+        private readonly IConfiguration iConfiguration;
 
-        public AuthenticationSeeder(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public AuthenticationSeeder(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IConfiguration iConfiguration)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.iConfiguration = iConfiguration;
         }
 
         public void AddRoles()
@@ -45,7 +47,7 @@ namespace SolarWatch.Services.Authentication
             if (adminInDb == null)
             {
                 var admin = new IdentityUser { UserName = "admin", Email = "admin@admin.com" };
-                var adminCreated = await userManager.CreateAsync(admin, "admin123!420");
+                var adminCreated = await userManager.CreateAsync(admin, iConfiguration["AppSettings:ADMIN_PASSWORD"]);
 
                 if (adminCreated.Succeeded)
                 {

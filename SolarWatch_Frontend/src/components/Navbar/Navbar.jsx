@@ -33,7 +33,7 @@ const Navbar = () => {
                         setIsAdmin(false);
                     }
                 })
-            .catch(() => setIsAdmin(false));
+                .catch(() => setIsAdmin(false));
 
             const updateTimer = () => {
                 const now = new Date().getTime()
@@ -90,19 +90,18 @@ const Navbar = () => {
     return (
         <nav className='navbar'>
             <Link to="/" className='buttonBlue'>Home</Link>
-            <Link to="/solar-watch" className='buttonBlue'>SolarWatch</Link>
             {isAdmin && <Link to="/admin" className='buttonYellow'>Admin Panel</Link>}
             {username ? (
                 <>
-                    <span className='nav-user'>Hello, <b>{username.slice(0, 1).toUpperCase() + username.slice(1)}</b></span>
-                    <button onClick={logout} className='buttonRed'>Logout</button>
+                    <Link to="/solar-watch" className='buttonBlue'>SolarWatch</Link>
+                    {/* <span className='nav-user'>Hello, <b>{username.slice(0, 1).toUpperCase() + username.slice(1)}</b></span> */}
+                    <button onClick={logout} className='buttonRed'>Logout {timeLeft}</button>
                     {tokenExpiry && (
-                        <span className='nav-timer'>
-                            Token expires in: {timeLeft}
+                        <>
                             {tokenExpiry - new Date().getTime() < 3 * 60 * 1000 && (
                                 <button onClick={renewToken} className='buttonYellow'>Stay logged in?</button>
                             )}
-                        </span>
+                        </>
                     )}
                 </>
             ) : (

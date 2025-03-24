@@ -4,7 +4,6 @@ import './Home.css'
 
 const Home = () => {
 
-    const [testMessage, setTestMessage] = useState('')
     const [displayOrderedList, setDisplayOrderedList] = useState(false)
 
     const displayHowTo = () => {
@@ -28,6 +27,7 @@ const Home = () => {
                 )}
 
             </div>
+            <Link to="/tos" className='buttonRed'>Please read before using the site !</Link>
         </div>
     )
 }

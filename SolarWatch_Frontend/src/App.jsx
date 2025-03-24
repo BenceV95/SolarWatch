@@ -12,6 +12,7 @@ import NotFound from './components/NotFound/NotFound'
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
 import AdminPanel from './components/AdminPanel/AdminPanel'
+import Tos from './components/Tos/Tos'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
       <div className="main-content">
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/tos' element={<Tos />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />

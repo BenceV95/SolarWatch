@@ -21,7 +21,7 @@ namespace SolarWatch
 
             // for appSettings.json
             var configuration = builder.Configuration; // this here in program.cs to ready out connection string
-            builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings")); // this so it can be used anywhere NOT in program.cs
+            builder.Services.Configure<AppSettings>(configuration.GetSection("AppSettings")); // this so it can be used anywhere NOT in program.cs
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -101,13 +101,6 @@ namespace SolarWatch
                     };
                 });
 
-
-
-            /*
-            if (!builder.Environment.IsEnvironment("Test"))
-            {
-            */
-
                 builder.Services.AddDbContext<SolarWatchApiContext>(options =>
                 {
 
@@ -117,11 +110,6 @@ namespace SolarWatch
                     options.UseNpgsql(connectionString);
 
                 });
-
-            /*
-            }
-            */
-
 
             builder.Services
                 .AddIdentityCore<IdentityUser>(options =>
@@ -144,6 +132,7 @@ namespace SolarWatch
                 // register appsettings 
                 var config = scope.ServiceProvider.GetRequiredService<IOptions<AppSettings>>().Value;
 
+                /*
                 // do automatic migraions
                 var services = scope.ServiceProvider;
                 try
@@ -156,6 +145,7 @@ namespace SolarWatch
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred while applying database migrations.");
                 }
+                */
 
                 // run role seeder
                 var authenticationSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
