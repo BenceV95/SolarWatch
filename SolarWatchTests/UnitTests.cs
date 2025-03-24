@@ -8,6 +8,7 @@ using SolarWatch.Controllers;
 using SolarWatch.Models;
 using SolarWatch.Repositories;
 using SolarWatch.Services;
+using Assert = NUnit.Framework.Assert;
 
 namespace SolarWatchTests
 {

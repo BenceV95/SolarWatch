@@ -32,16 +32,16 @@ namespace SolarWatchTests
 
             var webAppFactory = factory.WithWebHostBuilder(builder =>
             {
-                builder.UseEnvironment("Test");
                 builder.ConfigureServices(services =>
                 {
+                    /*
                     // Remove all DbContextOptions registrations
                     var descriptors = services.Where(d => d.ServiceType == typeof(DbContextOptions<SolarWatchApiContext>)).ToList();
                     foreach (var descriptor in descriptors)
                     {
                         services.Remove(descriptor);
                     }
-
+                    */
                     // Remove any existing DbContext registration
                     var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(SolarWatchApiContext));
                     if (dbContextDescriptor != null)

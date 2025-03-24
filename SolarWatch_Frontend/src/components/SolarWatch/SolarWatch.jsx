@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import './SolarWatch.css'
+import sunrisePic from '../../assets/sunrise.svg';
+import sunsetPic from '../../assets/sunset.svg';
+import noonPic from '../../assets/noon.svg';
+import timePic from '../../assets/time.svg';
 
 const SolarWatch = () => {
 
@@ -87,9 +91,9 @@ const SolarWatch = () => {
         <div className='solar-watch'>
 
             <form onSubmit={handleSubmit} className='solarForm'>
-                <input type='text' name='location' placeholder='Enter your location' />
+                <input type='text' name='location' placeholder='Enter your location' required />
                 <br />
-                <input type='date' name='date' />
+                <input type='date' name='date' required />
                 <br />
                 <button className='buttonBlue'>Search</button>
             </form>
@@ -107,10 +111,10 @@ const SolarWatch = () => {
                                     <h3>Date: {formatDate(solarData.date)}</h3>
                                 </div>
                                 <div className='solarDataInfo'>
-                                    <p><b>Sunrise: </b> {formatTimestamp(solarData.sunrise,true)}</p>
-                                    <p><b>Solar Noon: </b>{formatTimestamp(solarData.solarNoon,true)}</p>
-                                    <p><b>Sunset: </b>{formatTimestamp(solarData.sunset,true)}</p>
-                                    <p><b>Day Length: </b>{solarData.dayLengthFormatted}</p>
+                                    <p><img src={sunrisePic} height={32} alt='Sunrise' title='Sunrise. From: https://www.svgrepo.com/' />{formatTimestamp(solarData.sunrise,true)}</p>
+                                    <p><img src={noonPic} height={32} alt='Solar Noon' title='Noon. From: https://www.svgrepo.com/' />{formatTimestamp(solarData.solarNoon,true)}</p>
+                                    <p><img src={sunsetPic} height={32} alt='Sunset' title='Sunset. From: https://www.svgrepo.com/' />{formatTimestamp(solarData.sunset,true)}</p>
+                                    <p><img src={timePic} height={32} alt='Day Length' title='Day Length. From: https://www.svgrepo.com/' />{solarData.dayLengthFormatted}</p>
                                 </div>
 
                             </div>

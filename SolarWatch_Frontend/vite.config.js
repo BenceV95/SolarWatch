@@ -5,10 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,
+    port: 42003,
     proxy: {
       '/api': {
-        target: /* process.env.VITE_API_BASE_URL */ 'http://localhost:5158', // remove .env file and it will work
+        target: /* process.env.VITE_API_BASE_URL */ 'http://localhost:5158',
         changeOrigin: true,
         secure: false, // DO NOT USE IN PRODUCTION. GET A VALID SSL CERTIFICATE
         rewrite: (path) => path.replace(/^\/api/, '')
