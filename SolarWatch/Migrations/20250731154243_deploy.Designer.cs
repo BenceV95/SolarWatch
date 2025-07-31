@@ -12,15 +12,15 @@ using SolarWatch.Context;
 namespace SolarWatch.Migrations
 {
     [DbContext(typeof(SolarWatchApiContext))]
-    [Migration("20250123145055_addRoles")]
-    partial class addRoles
+    [Migration("20250731154243_deploy")]
+    partial class deploy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "8.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

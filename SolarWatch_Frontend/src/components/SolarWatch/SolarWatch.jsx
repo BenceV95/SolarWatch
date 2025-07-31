@@ -41,7 +41,6 @@ const SolarWatch = () => {
             const result = await response.json();
             setSolarData(result);
             console.log("Response result: ", result);
-
         }
         else {
             const result = await response.text();
@@ -51,36 +50,19 @@ const SolarWatch = () => {
         setLoading(false);
     }
 
-    function formatTimestamp(isoString, timeOnly = false) {
-        const date = new Date(isoString);
+    function formatTimestamp(isoString) {
+        const utcDate = new Date(isoString);
+        const localDateStr = utcDate.toLocaleString(undefined, {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false
+        })
 
-        if (timeOnly) {
-            const timeStr = isoString.split('T')[1].split('Z')[0];
-            const options = {
-                hour: "2-digit",
-                hour12: false,
-                hourCycle: "h24",
-                minute: "2-digit",
-                second: "2-digit"
-            };
-            return timeStr.toLocaleString(options);
-
-        } else {            
-
-            const options = {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                hour12: false,
-                hourCycle: "h24",
-                minute: "2-digit",
-                second: "2-digit",
-                timeZoneName: "short"
-            };
-
-            return date.toLocaleString(options);
-        }
+        return localDateStr.split(",")[1];
     }
 
     function formatDate(string) {
@@ -93,7 +75,7 @@ const SolarWatch = () => {
             <form onSubmit={handleSubmit} className='solarForm'>
                 <input type='text' name='location' placeholder='Enter your location' required />
                 <br />
-                <input type='date' name='date' required />
+                <input type='date' name='date' required value={new Date().toISOString().split("T")[0]}/>
                 <br />
                 <button className='buttonBlue'>Search</button>
             </form>
@@ -111,11 +93,27 @@ const SolarWatch = () => {
                                     <h3>Date: {formatDate(solarData.date)}</h3>
                                 </div>
                                 <div className='solarDataInfo'>
-                                    <p><img src={sunrisePic} height={32} alt='Sunrise' title='Sunrise. From: https://www.svgrepo.com/' />{formatTimestamp(solarData.sunrise,true)}</p>
-                                    <p><img src={noonPic} height={32} alt='Solar Noon' title='Noon. From: https://www.svgrepo.com/' />{formatTimestamp(solarData.solarNoon,true)}</p>
-                                    <p><img src={sunsetPic} height={32} alt='Sunset' title='Sunset. From: https://www.svgrepo.com/' />{formatTimestamp(solarData.sunset,true)}</p>
-                                    <p><img src={timePic} height={32} alt='Day Length' title='Day Length. From: https://www.svgrepo.com/' />{solarData.dayLengthFormatted}</p>
+                                    <div>
+                                        <img src={sunrisePic} height={32} alt='Sunrise' title='Sunrise. From: https://www.svgrepo.com/' />
+                                        <p>{formatTimestamp(solarData.sunrise)}</p>
+                                    </div>
+                                    <div>
+                                        <img src={noonPic} height={32} alt='Solar Noon' title='Noon. From: https://www.svgrepo.com/' />
+                                        <p>{formatTimestamp(solarData.solarNoon)}</p>
+                                    </div>
+                                    <div>
+                                        <img src={sunsetPic} height={32} alt='Sunset' title='Sunset. From: https://www.svgrepo.com/' />
+                                        <p>{formatTimestamp(solarData.sunset)}</p>
+                                    </div>
+                                    <div>
+                                        <img src={timePic} height={32} alt='Day Length' title='Day Length. From: https://www.svgrepo.com/' />
+                                        <p>{solarData.dayLengthFormatted}</p>
+                                    </div>                                    
                                 </div>
+
+                                    <i>
+                                        These times are adjusted for your local time
+                                    </i>
 
                             </div>
                         )}

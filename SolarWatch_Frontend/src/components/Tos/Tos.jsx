@@ -13,9 +13,9 @@ const Tos = () => {
                 <li>For this reason you can register with <i>fake email.</i></li>
                 <li>The project is <b>UNDER DEVELOPMENT</b> and is <b>NOT</b> the final version. Unoptimized for mobile and bugs are higly likely.</li>
                 <li>This project is used to demonstrate my skills as a Junior Full Stack Developer.</li>
-                <li><Link to="https://github.com/BenceV95/SolarWatch.git">GitHub Link</Link></li>
-                <li><Link to="https://benceveres.com">Further Questions? Contact me here</Link></li>
-                <li><Link to="https://www.svgrepo.com/">SVGs are downloaded from here.</Link></li>
+                <li><Link to="https://github.com/BenceV95/SolarWatch.git" target='_blank'>GitHub Link</Link></li>
+                <li><Link to="https://benceveres.com" target='_blank'>Further Questions? Contact me here</Link></li>
+                <li><Link to="https://www.svgrepo.com/" target='_blank'>SVGs are downloaded from here.</Link></li>
                 <li>Thank you for understanding !</li>
             </ul>
         </p>
